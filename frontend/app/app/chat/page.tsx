@@ -10,8 +10,8 @@ import { motion } from "framer-motion";
 import { Plus, Search, Globe, Lock, Users } from "lucide-react";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { ChatWindow } from "@/components/chat/ChatWindow";
-import { SPORT_CONFIG } from "@/../../shared/types";
-import type { Chat } from "@/../../shared/types";
+import { SPORT_CONFIG } from "@shared/types";
+import type { Chat } from "@shared/types";
 import { cn, timeAgo, getToken } from "@/lib/utils";
 import toast from "react-hot-toast";
 

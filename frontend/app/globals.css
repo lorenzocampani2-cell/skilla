@@ -75,10 +75,6 @@
     --accent-hover: #FF4400;
   }
 
-  * {
-    @apply border-border;
-  }
-
   html {
     /* Scrollbar sottile e discreta */
     scrollbar-width: thin;

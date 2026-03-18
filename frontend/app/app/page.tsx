@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { Plus, MessageSquare, Map, QrCode, Users } from "lucide-react";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { SportCarousel } from "@/components/sport/SportCarousel";
-import { SPORT_CONFIG } from "@/../../shared/types";
+import { SPORT_CONFIG } from "@shared/types";
 import { cn, timeAgo } from "@/lib/utils";
 
 export default function AppHomePage() {

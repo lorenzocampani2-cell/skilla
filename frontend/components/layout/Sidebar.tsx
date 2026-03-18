@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { Plus, Search, Compass, Map, Bell, Settings, LogOut } from "lucide-react";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { useAuth } from "@/components/providers/AuthProvider";
-import { SPORT_CONFIG } from "@/../../shared/types";
+import { SPORT_CONFIG } from "@shared/types";
 import { cn, timeAgo } from "@/lib/utils";
 
 export function Sidebar() {

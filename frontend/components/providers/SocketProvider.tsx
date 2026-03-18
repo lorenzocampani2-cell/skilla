@@ -16,7 +16,7 @@ import type { Socket } from "socket.io-client";
 import { getSocket, disconnectSocket } from "@/lib/socket/socket";
 import { useAppStore } from "@/lib/store/useAppStore";
 import supabase from "@/lib/supabase/client";
-import type { Message, Chat, User } from "@/../../shared/types";
+import type { Message, Chat, User } from "@shared/types";
 import toast from "react-hot-toast";
 
 interface SocketContextType {

@@ -13,8 +13,8 @@ import { MessageBubble } from "./MessageBubble";
 import { PushToTalk } from "./PushToTalk";
 import { ChatAdminPanel } from "./ChatAdminPanel";
 import { QRCodeModal } from "./QRCodeModal";
-import { SPORT_CONFIG } from "@/../../shared/types";
-import type { Chat } from "@/../../shared/types";
+import { SPORT_CONFIG } from "@shared/types";
+import type { Chat } from "@shared/types";
 import { cn, formatTime } from "@/lib/utils";
 import toast from "react-hot-toast";
 

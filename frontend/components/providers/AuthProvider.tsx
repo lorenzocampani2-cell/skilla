@@ -8,7 +8,7 @@ import React, { useEffect, createContext, useContext } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabase/client";
 import { useAppStore } from "@/lib/store/useAppStore";
-import type { User } from "@/../../shared/types";
+import type { User } from "@shared/types";
 
 interface AuthContextType {
   signInWithGoogle: () => Promise<void>;

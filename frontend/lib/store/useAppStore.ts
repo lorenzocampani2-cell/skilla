@@ -6,7 +6,7 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import type { User, Chat, Message, UserPreferences, SportType } from "@/../../shared/types";
+import type { User, Chat, Message, UserPreferences, SportType } from "@shared/types";
 
 // --- Tipi tema e interfaccia ---
 export type Theme = "dark" | "light" | "high-contrast";

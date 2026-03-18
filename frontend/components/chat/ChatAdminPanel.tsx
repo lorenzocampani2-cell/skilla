@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 import { useSocket } from "@/components/providers/SocketProvider";
 import { useAppStore } from "@/lib/store/useAppStore";
-import { SPORT_CONFIG } from "@/../../shared/types";
-import type { Chat, ChatMember } from "@/../../shared/types";
+import { SPORT_CONFIG } from "@shared/types";
+import type { Chat, ChatMember } from "@shared/types";
 import { cn, stringToColor, getInitials, timeAgo } from "@/lib/utils";
 import toast from "react-hot-toast";
 
@@ -267,10 +267,10 @@ function MemberRow({
               {isSelf && <span className="ml-1 text-xs text-blue-400">(tu)</span>}
             </span>
             {isMemberAdmin && (
-              <Crown size={12} className="text-yellow-400 flex-shrink-0" title="Admin" />
+              <Crown size={12} className="text-yellow-400 flex-shrink-0" aria-label="Admin" />
             )}
             {member.isMuted && (
-              <VolumeX size={12} className="text-red-400 flex-shrink-0" title="Silenziato" />
+              <VolumeX size={12} className="text-red-400 flex-shrink-0" aria-label="Silenziato" />
             )}
           </div>
           <p className="text-xs" style={{ color: "var(--text-muted)" }}>

@@ -49,11 +49,11 @@ const nextConfig = {
   },
 
   webpack(config) {
-    // Supporto per file SVG come componenti React
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
+    const path = require("path");
+
+    // Alias @shared → ../shared
+    config.resolve.alias["@shared"] = path.resolve(__dirname, "../shared");
+
     return config;
   },
 };

@@ -128,6 +128,20 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   };
 }
 
+// Ottieni JWT token Supabase (usato in fetch autenticate)
+export async function getToken(): Promise<string> {
+  try {
+    const { createClientComponentClient } = await import(
+      "@supabase/auth-helpers-nextjs"
+    );
+    const supabase = createClientComponentClient();
+    const { data } = await supabase.auth.getSession();
+    return data.session?.access_token || "";
+  } catch {
+    return "";
+  }
+}
+
 // Throttle
 export function throttle<T extends (...args: unknown[]) => unknown>(
   fn: T,

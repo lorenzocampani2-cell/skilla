@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/components/providers/AuthProvider";
-import { SPORT_CONFIG, SportType } from "@/../../shared/types";
+import { SPORT_CONFIG, SportType } from "@shared/types";
 import { generateGuestName } from "@/lib/utils";
 
 // Elenco sport per la selezione iniziale
@@ -222,9 +222,3 @@ export default function LandingPage() {
   );
 }
 
-// Helper locale
-function generateGuestName(): string {
-  const adj = ["Veloce", "Forte", "Agile", "Audace", "Rapido"];
-  const noun = ["Atleta", "Rider", "Runner", "Climber", "Sciatore"];
-  return `${adj[Math.floor(Math.random() * adj.length)]}${noun[Math.floor(Math.random() * noun.length)]}${Math.floor(Math.random() * 99)}`;
-}

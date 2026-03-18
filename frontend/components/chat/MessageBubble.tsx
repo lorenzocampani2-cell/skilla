@@ -9,8 +9,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Pin, Trash2, Reply } from "lucide-react";
 import { useSocket } from "@/components/providers/SocketProvider";
 import { useAppStore } from "@/lib/store/useAppStore";
-import { SPORT_CONFIG } from "@/../../shared/types";
-import type { Message } from "@/../../shared/types";
+import { SPORT_CONFIG } from "@shared/types";
+import type { Message } from "@shared/types";
 import { cn, formatTime, stringToColor, getInitials } from "@/lib/utils";
 
 const QUICK_REACTIONS = ["👍", "❤️", "😂", "🔥", "💪", "🏆"];

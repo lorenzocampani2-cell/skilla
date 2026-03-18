@@ -24,8 +24,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { ChevronLeft, ChevronRight, Settings2, Eye, EyeOff } from "lucide-react";
 import { useAppStore } from "@/lib/store/useAppStore";
-import { SPORT_CONFIG } from "@/../../shared/types";
-import type { SportType } from "@/../../shared/types";
+import { SPORT_CONFIG } from "@shared/types";
+import type { SportType } from "@shared/types";
 import { cn } from "@/lib/utils";
 
 // Contenuti per ogni tipo di card
@@ -85,7 +85,8 @@ export function SportCarousel() {
   }
 
   const currentItem = visibleItems[currentIdx];
-  const CardComponent = CARD_CONTENT[currentItem?.type] || StatCard;
+  const cardType = currentItem?.type as keyof typeof CARD_CONTENT;
+  const CardComponent = CARD_CONTENT[cardType] || StatCard;
 
   return (
     <div className="flex flex-col gap-3">
