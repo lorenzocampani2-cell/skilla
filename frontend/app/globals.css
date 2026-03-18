@@ -1,0 +1,449 @@
+/* ============================================================
+   SKILLA — Global Styles
+   ============================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Fonts: Inter */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* ============================================================
+   BASE — Reset e variabili CSS
+   ============================================================ */
+@layer base {
+  :root {
+    /* Tema Light (default) */
+    --bg-primary: #F8FAFC;
+    --bg-secondary: #F1F5F9;
+    --bg-card: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --border: #E2E8F0;
+    --accent: #3B82F6;
+    --accent-hover: #2563EB;
+
+    /* Tema comune */
+    --radius: 12px;
+    --radius-lg: 20px;
+    --sidebar-width: 280px;
+    --navbar-height: 64px;
+    --bottom-nav-height: 68px;
+
+    /* Transizioni fluide */
+    --transition: 200ms ease;
+    --transition-slow: 400ms ease;
+  }
+
+  .dark {
+    --bg-primary: #0A0F1E;
+    --bg-secondary: #111827;
+    --bg-card: #1E2537;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #4B5563;
+    --border: #1F2937;
+    --accent: #60A5FA;
+    --accent-hover: #3B82F6;
+  }
+
+  /* ── Modalità HIGH CONTRAST ── */
+  .high-contrast {
+    --bg-primary: #000000;
+    --bg-secondary: #111111;
+    --bg-card: #000000;
+    --text-primary: #FFFFFF;
+    --text-secondary: #FFFFFF;
+    --text-muted: #CCCCCC;
+    --border: #FFFFFF;
+    --accent: #FFFF00;
+    --accent-hover: #FFD700;
+  }
+
+  /* ── Modalità EMERGENCY ── */
+  .emergency {
+    --bg-primary: #000000;
+    --bg-secondary: #000000;
+    --bg-card: #1A0A00;
+    --text-primary: #FFFF00;
+    --text-secondary: #FF6600;
+    --text-muted: #FF6600;
+    --border: #FF6600;
+    --accent: #FF6600;
+    --accent-hover: #FF4400;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    /* Scrollbar sottile e discreta */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    /* Previeni zoom accidentale su iOS */
+    -webkit-text-size-adjust: 100%;
+    /* Smooth scroll */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: "Inter", system-ui, sans-serif;
+    /* Safe area per dispositivi con notch */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    @apply antialiased;
+    transition: background-color var(--transition-slow), color var(--transition-slow);
+  }
+
+  /* Scrollbar personalizzata su WebKit */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* Focus ring accessibile */
+  :focus-visible {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+  }
+
+  .high-contrast :focus-visible,
+  .emergency :focus-visible {
+    @apply ring-yellow-400 ring-4;
+  }
+
+  /* Selezione testo */
+  ::selection {
+    background: var(--accent);
+    color: white;
+  }
+}
+
+/* ============================================================
+   COMPONENTS — Stili riutilizzabili
+   ============================================================ */
+@layer components {
+
+  /* ── Card base ── */
+  .card {
+    @apply rounded-2xl border;
+    background: var(--bg-card);
+    border-color: var(--border);
+    transition: all var(--transition);
+  }
+
+  /* ── Bottone primario ── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-3 rounded-xl font-semibold text-white
+           touch-target transition-all active:scale-95
+           focus-visible:ring-2 focus-visible:ring-blue-400;
+    background: var(--accent);
+  }
+
+  .btn-primary:hover { background: var(--accent-hover); }
+
+  .btn-primary:disabled {
+    @apply opacity-40 cursor-not-allowed active:scale-100;
+  }
+
+  /* ── Bottone ghost ── */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2.5 rounded-xl font-medium
+           touch-target transition-all active:scale-95;
+    color: var(--text-secondary);
+  }
+
+  .btn-ghost:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  /* ── Input ── */
+  .input {
+    @apply w-full px-4 py-3 rounded-xl text-sm font-medium
+           transition-all outline-none touch-target;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1.5px solid var(--border);
+  }
+
+  .input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .input::placeholder { color: var(--text-muted); }
+
+  /* ── Badge sport ── */
+  .sport-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1
+           rounded-full text-xs font-bold;
+  }
+
+  /* ── Avatar ── */
+  .avatar {
+    @apply relative flex-shrink-0 rounded-full
+           flex items-center justify-center font-bold overflow-hidden;
+  }
+
+  .avatar-sm  { @apply w-8 h-8 text-sm; }
+  .avatar-md  { @apply w-10 h-10 text-base; }
+  .avatar-lg  { @apply w-14 h-14 text-xl; }
+  .avatar-xl  { @apply w-20 h-20 text-3xl; }
+
+  /* Online indicator */
+  .online-dot {
+    @apply absolute bottom-0 right-0 w-3 h-3 rounded-full
+           bg-green-400 border-2;
+    border-color: var(--bg-card);
+  }
+
+  /* ── Glassmorphism pannello ── */
+  .glass-panel {
+    @apply glass rounded-2xl;
+  }
+
+  .dark .glass-panel {
+    @apply shadow-glass-dark;
+  }
+
+  /* ── Navbar fissa ── */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 z-50
+           flex items-center justify-around
+           border-t;
+    background: var(--bg-card);
+    border-color: var(--border);
+    height: var(--bottom-nav-height);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* ── Chip / Tag ── */
+  .chip {
+    @apply inline-flex items-center gap-1 px-2.5 py-1
+           rounded-full text-xs font-medium;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+
+  /* ── Divisore con testo ── */
+  .divider {
+    @apply flex items-center gap-3 my-4;
+    color: var(--text-muted);
+  }
+
+  .divider::before,
+  .divider::after {
+    @apply flex-1 h-px;
+    content: "";
+    background: var(--border);
+  }
+
+  /* ── Loading skeleton ── */
+  .skeleton {
+    @apply rounded-lg animate-pulse;
+    background: var(--bg-secondary);
+  }
+
+  /* ── Modalità EMERGENCY — override globale ── */
+  .emergency .card,
+  .emergency .glass-panel {
+    @apply border-2;
+    border-color: var(--border);
+    background: var(--bg-card);
+  }
+
+  .emergency .btn-primary {
+    @apply text-black text-xl font-black py-5 rounded-2xl;
+    background: var(--accent);
+    min-height: 72px;
+  }
+
+  .emergency p,
+  .emergency span,
+  .emergency label {
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  /* ── Modalità ESSENTIAL ── */
+  .essential .card-label { @apply hidden; }
+  .essential .secondary-content { @apply hidden; }
+
+  /* ── Gradient background animato per la homepage ── */
+  .hero-gradient {
+    background: radial-gradient(
+      ellipse at top left,
+      rgba(59, 130, 246, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(139, 92, 246, 0.1) 0%,
+      transparent 50%
+    );
+  }
+}
+
+/* ============================================================
+   UTILITIES — Classi di supporto
+   ============================================================ */
+@layer utilities {
+  /* Testo gradiente */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r
+           from-blue-400 to-violet-500;
+  }
+
+  /* Bordo gradiente */
+  .border-gradient {
+    position: relative;
+  }
+
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                  linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Testo sport */
+  .text-sport-skiing    { color: #3B82F6; }
+  .text-sport-snowboard { color: #8B5CF6; }
+  .text-sport-football  { color: #10B981; }
+  .text-sport-basketball{ color: #F59E0B; }
+  .text-sport-swimming  { color: #06B6D4; }
+  .text-sport-cycling   { color: #EF4444; }
+  .text-sport-running   { color: #F97316; }
+  .text-sport-tennis    { color: #84CC16; }
+
+  /* Nascondi scrollbar ma mantieni funzionalità */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Testo troncato multilinea */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Sicurezza touch su mobile: previeni selezione accidentale */
+  .no-select { user-select: none; -webkit-user-select: none; }
+
+  /* Overflow touch scroll fluido */
+  .touch-scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ============================================================
+   ANIMAZIONI PWA — Transizioni pagina
+   ============================================================ */
+.page-enter { opacity: 0; transform: translateX(16px); }
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 250ms ease;
+}
+.page-exit { opacity: 1; }
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: all 200ms ease;
+}
+
+/* ============================================================
+   REACT GRID LAYOUT — Drag & drop pannelli
+   ============================================================ */
+.react-grid-item {
+  transition: all 200ms ease;
+  transition-property: left, top;
+}
+
+.react-grid-item.cssTransforms {
+  transition-property: transform;
+}
+
+.react-grid-item.resizing {
+  z-index: 100;
+  will-change: width, height;
+}
+
+.react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 100;
+  will-change: transform;
+  @apply shadow-2xl scale-105 opacity-90;
+}
+
+.react-grid-item.react-grid-placeholder {
+  @apply rounded-2xl opacity-30;
+  background: var(--accent) !important;
+}
+
+.react-resizable-handle {
+  @apply opacity-0 transition-opacity;
+}
+
+.react-grid-item:hover .react-resizable-handle {
+  @apply opacity-100;
+}
+
+/* ============================================================
+   CHAT — Stili specifici messaggi
+   ============================================================ */
+.message-bubble {
+  @apply rounded-2xl px-4 py-2.5 max-w-[80%] break-words text-sm;
+}
+
+.message-bubble.own {
+  @apply rounded-br-sm ml-auto;
+  background: var(--accent);
+  color: white;
+}
+
+.message-bubble.other {
+  @apply rounded-bl-sm;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   PUSH-TO-TALK — Bottone microfono
+   ============================================================ */
+.ptt-button {
+  @apply relative flex items-center justify-center
+         rounded-full cursor-pointer select-none
+         active:scale-95 transition-all;
+  background: var(--accent);
+  width: 80px;
+  height: 80px;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.ptt-button.recording {
+  animation: pulseRing 1s ease-in-out infinite;
+  background: #EF4444;
+  box-shadow: 0 0 0 8px rgba(239, 68, 68, 0.3);
+}
+
+.emergency .ptt-button {
+  width: 120px;
+  height: 120px;
+}

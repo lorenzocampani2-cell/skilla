@@ -1,0 +1,86 @@
+{
+  "name": "SKILLA — Sport Communication",
+  "short_name": "SKILLA",
+  "description": "Chat, voce e tracciamento per atleti. Gratis.",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#0A0F1E",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "categories": ["sports", "social", "communication"],
+  "lang": "it",
+  "icons": [
+    {
+      "src": "/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nuova Chat",
+      "short_name": "Chat",
+      "url": "/app/chat/new",
+      "icons": [{ "src": "/icons/shortcut-chat.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Scansiona QR",
+      "short_name": "QR",
+      "url": "/app/join",
+      "icons": [{ "src": "/icons/shortcut-qr.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Home SKILLA"
+    }
+  ],
+  "prefer_related_applications": false
+}
