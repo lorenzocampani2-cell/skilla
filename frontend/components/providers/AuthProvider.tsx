@@ -95,7 +95,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .single();
 
       if (error) console.error("[auth] insert profile error:", error.message);
-      if (data) setCurrentUser(mapProfile(data));
+
+      // Anche se il DB fallisce, usiamo i dati dell'auth per entrare nell'app
+      setCurrentUser(data ? mapProfile(data) : {
+        id: userId,
+        username: newRow.username,
+        displayName: newRow.display_name,
+        avatar: newRow.avatar,
+        sport: "other",
+        authType: newRow.auth_type as User["authType"],
+        badges: [],
+        preferences: defaultPreferences(),
+        createdAt: new Date().toISOString(),
+      });
     }
   }
 
@@ -135,29 +147,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
-  // Accesso guest anonimo — nessun obbligo di registrazione
+  // Accesso guest anonimo — usa Supabase anonymous auth
   async function signInAsGuest(displayName?: string) {
     setIsLoading(true);
     try {
-      const guestEmail = `guest_${Date.now()}@skilla.app`;
-      const guestPassword = `guest_${Math.random().toString(36).slice(2)}`;
+      const name = displayName || generateGuestName();
 
-      const { data, error } = await supabase.auth.signUp({
-        email: guestEmail,
-        password: guestPassword,
-        options: {
-          data: {
-            full_name: displayName || generateGuestName(),
-            is_guest: true,
-          },
-        },
+      const { data, error } = await supabase.auth.signInAnonymously({
+        options: { data: { full_name: name, is_guest: true } },
       });
 
       if (error) throw error;
       if (data.user) {
-        await loadOrCreateProfile(data.user.id, data.user);
+        await loadOrCreateProfile(data.user.id, { user_metadata: { full_name: name } });
         router.push("/app");
       }
+    } catch (err) {
+      console.error("[auth] guest login error:", err);
     } finally {
       setIsLoading(false);
     }
