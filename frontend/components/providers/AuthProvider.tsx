@@ -70,32 +70,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .single();
 
     if (profile) {
-      setCurrentUser(profile as User);
+      // Mappa snake_case DB → camelCase TypeScript
+      setCurrentUser(mapProfile(profile));
     } else {
-      // Prima volta: crea profilo con valori default
-      const newUser: Partial<User> = {
+      // Prima volta: crea profilo con colonne snake_case (come nel DB)
+      const newRow = {
         id: userId,
         username: generateUsername(),
-        displayName:
+        display_name:
           (authUser.user_metadata?.full_name as string) ||
           (authUser.user_metadata?.name as string) ||
           generateGuestName(),
         avatar: authUser.user_metadata?.avatar_url as string | undefined,
         sport: "other",
-        authType: authUser.email ? "google" : "guest",
+        auth_type: authUser.email ? "google" : "guest",
         badges: [],
         preferences: defaultPreferences(),
-        createdAt: new Date().toISOString(),
       };
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("profiles")
-        .insert(newUser)
+        .insert(newRow)
         .select()
         .single();
 
-      if (data) setCurrentUser(data as User);
+      if (error) console.error("[auth] insert profile error:", error.message);
+      if (data) setCurrentUser(mapProfile(data));
     }
+  }
+
+  // Converte riga DB (snake_case) → User (camelCase)
+  function mapProfile(row: Record<string, unknown>): User {
+    return {
+      id: row.id as string,
+      username: row.username as string,
+      displayName: row.display_name as string,
+      avatar: row.avatar as string | undefined,
+      sport: (row.sport as User["sport"]) || "other",
+      authType: (row.auth_type as User["authType"]) || "guest",
+      badges: (row.badges as User["badges"]) || [],
+      preferences: (row.preferences as User["preferences"]) || defaultPreferences(),
+      createdAt: row.created_at as string,
+      isOnline: row.is_online as boolean | undefined,
+      lastSeen: row.last_seen as string | undefined,
+    };
   }
 
   // Login Google OAuth
