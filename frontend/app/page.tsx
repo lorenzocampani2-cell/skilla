@@ -4,11 +4,13 @@
 // Prima schermata: accedi con Google, Apple o come ospite.
 // ============================================================
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { SPORT_CONFIG, SportType } from "@shared/types";
 import { generateGuestName } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 // Elenco sport per la selezione iniziale
 const SPORTS = Object.entries(SPORT_CONFIG) as [SportType, (typeof SPORT_CONFIG)[SportType]][];
@@ -18,6 +20,13 @@ export default function LandingPage() {
   const [step, setStep] = useState<"home" | "guest-setup">("home");
   const [guestName, setGuestName] = useState(generateGuestName());
   const [selectedSport, setSelectedSport] = useState<SportType>("skiing");
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("error") === "auth_callback_failed") {
+      toast.error("Accesso fallito. Riprova o usa un altro metodo.");
+    }
+  }, []);
 
   function handleGuestContinue() {
     signInAsGuest(guestName || generateGuestName());

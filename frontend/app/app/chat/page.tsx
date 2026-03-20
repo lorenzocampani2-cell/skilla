@@ -42,7 +42,10 @@ export default function ChatListPage() {
       );
       const data = await res.json();
       if (data.success) setChats(data.data);
-    } catch { /* silently fail */ }
+      else toast.error("Impossibile caricare le chat.");
+    } catch {
+      toast.error("Server non raggiungibile. Assicurati che il backend sia avviato.");
+    }
   }
 
   async function loadPublicChats() {
@@ -57,6 +60,9 @@ export default function ChatListPage() {
       );
       const data = await res.json();
       if (data.success) setPublicChats(data.data);
+      else toast.error("Impossibile caricare le chat pubbliche.");
+    } catch {
+      toast.error("Server non raggiungibile.");
     } finally {
       setIsLoading(false);
     }

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabase/client";
 import { useAppStore } from "@/lib/store/useAppStore";
 import type { User } from "@shared/types";
+import toast from "react-hot-toast";
 
 interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
@@ -94,7 +95,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .select()
         .single();
 
-      if (error) console.error("[auth] insert profile error:", error.message);
+      if (error) {
+        console.error("[auth] insert profile error:", error.message);
+        toast.error("Errore nella creazione del profilo. Riprova.");
+      }
 
       // Anche se il DB fallisce, usiamo i dati dell'auth per entrare nell'app
       setCurrentUser(data ? mapProfile(data) : {
@@ -157,13 +161,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         options: { data: { full_name: name, is_guest: true } },
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes("Anonymous sign-ins are disabled")) {
+          toast.error("Accesso ospite non disponibile. Usa Google per accedere.");
+        } else {
+          toast.error(`Errore di accesso: ${error.message}`);
+        }
+        return;
+      }
       if (data.user) {
         await loadOrCreateProfile(data.user.id, { user_metadata: { full_name: name } });
         router.push("/app");
       }
     } catch (err) {
       console.error("[auth] guest login error:", err);
+      toast.error("Errore durante l'accesso. Riprova.");
     } finally {
       setIsLoading(false);
     }
