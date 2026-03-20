@@ -73,7 +73,7 @@ export default function ChatListPage() {
   );
 
   // Se c'è una chat attiva, mostra ChatWindow in fullscreen su mobile
-  if (activeChat && window.innerWidth < 768) {
+  if (activeChat && typeof window !== "undefined" && window.innerWidth < 768) {
     return (
       <ChatWindow
         chat={activeChat}
