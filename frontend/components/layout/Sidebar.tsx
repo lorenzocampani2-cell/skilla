@@ -7,7 +7,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Plus, Search, Compass, Map, Bell, Settings, LogOut } from "lucide-react";
+import { Plus, Search, Compass, Map, Bell, Settings, LogOut, Radio } from "lucide-react";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { SPORT_CONFIG } from "@shared/types";
@@ -65,6 +65,7 @@ export function Sidebar() {
       <nav className="px-2 pb-2">
         {[
           { href: "/app", label: "Esplora", icon: Compass },
+          { href: "/app/rooms", label: "Stanze Voce", icon: Radio },
           { href: "/app/map", label: "Mappa", icon: Map },
           { href: "/app/notifications", label: "Notifiche", icon: Bell },
         ].map((item) => (

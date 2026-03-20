@@ -23,6 +23,7 @@ const { registerLocationHandlers } = require("./handlers/location");
 const authRoutes = require("./routes/auth");
 const chatRoutes = require("./routes/chats");
 const qrRoutes = require("./routes/qr");
+const roomRoutes = require("./routes/rooms");
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -72,6 +73,7 @@ app.use(limiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/qr", qrRoutes);
+app.use("/api/rooms", roomRoutes);
 
 // Health check
 app.get("/health", (req, res) => {

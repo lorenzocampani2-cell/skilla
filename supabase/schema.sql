@@ -288,7 +288,84 @@ create policy "invites_delete"
   using (auth.uid() = created_by);
 
 -- ============================================================
--- 6. REALTIME — abilita le tabelle necessarie
+-- 6. TABELLA: rooms
+--    Stanze voce live per sport.
+-- ============================================================
+create table if not exists public.rooms (
+  id              text primary key,
+  name            text not null,
+  description     text,
+  creator_id      uuid references public.profiles(id) on delete set null,
+  sport           text,
+  is_live         boolean not null default true,
+  max_users       integer,
+  voice_room_id   text not null,          -- LiveKit room name
+  created_at      timestamptz not null default now(),
+  ended_at        timestamptz
+);
+
+create index if not exists idx_rooms_live   on public.rooms(is_live);
+create index if not exists idx_rooms_sport  on public.rooms(sport);
+create index if not exists idx_rooms_created on public.rooms(created_at desc);
+
+-- RLS
+alter table public.rooms enable row level security;
+
+create policy "rooms_select_all"
+  on public.rooms for select
+  using (true);
+
+create policy "rooms_insert"
+  on public.rooms for insert
+  with check (auth.uid() is not null);
+
+create policy "rooms_update"
+  on public.rooms for update
+  using (auth.uid() = creator_id);
+
+create policy "rooms_delete"
+  on public.rooms for delete
+  using (auth.uid() = creator_id);
+
+-- ============================================================
+-- 7. TABELLA: room_participants
+--    Partecipanti attivi nelle stanze voce.
+-- ============================================================
+create table if not exists public.room_participants (
+  id          text primary key,           -- '{room_id}_{user_id}'
+  room_id     text not null references public.rooms(id) on delete cascade,
+  user_id     uuid not null references public.profiles(id) on delete cascade,
+  joined_at   timestamptz not null default now(),
+  is_speaking boolean not null default false,
+  is_muted    boolean not null default false,
+
+  unique (room_id, user_id)
+);
+
+create index if not exists idx_rp_room on public.room_participants(room_id);
+create index if not exists idx_rp_user on public.room_participants(user_id);
+
+-- RLS
+alter table public.room_participants enable row level security;
+
+create policy "rp_select_all"
+  on public.room_participants for select
+  using (true);
+
+create policy "rp_insert"
+  on public.room_participants for insert
+  with check (auth.uid() is not null);
+
+create policy "rp_update_own"
+  on public.room_participants for update
+  using (auth.uid() = user_id);
+
+create policy "rp_delete_own"
+  on public.room_participants for delete
+  using (auth.uid() = user_id);
+
+-- ============================================================
+-- 8. REALTIME — abilita le tabelle necessarie
 -- ============================================================
 -- Esegui questi comandi SOLO se vuoi il realtime Supabase
 -- (opzionale: usiamo Socket.io come canale principale)
@@ -298,10 +375,13 @@ create policy "invites_delete"
 -- alter publication supabase_realtime add table public.chats;
 
 -- ============================================================
--- 7. STORAGE BUCKET (da creare nella dashboard Supabase)
+-- 9. STORAGE BUCKET (da creare nella dashboard Supabase)
 -- ============================================================
 -- Bucket "avatars"  → pubblico, max 2 MB, solo immagini
 -- Bucket "media"    → pubblico, max 10 MB, audio + immagini
+
+-- alter publication supabase_realtime add table public.rooms;
+-- alter publication supabase_realtime add table public.room_participants;
 
 -- ============================================================
 -- FINE SCHEMA

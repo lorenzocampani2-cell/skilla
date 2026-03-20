@@ -16,10 +16,13 @@ import toast from "react-hot-toast";
 const SPORTS = Object.entries(SPORT_CONFIG) as [SportType, (typeof SPORT_CONFIG)[SportType]][];
 
 export default function LandingPage() {
-  const { signInWithGoogle, signInWithApple, signInAsGuest, isLoading } = useAuth();
-  const [step, setStep] = useState<"home" | "guest-setup">("home");
+  const { signInWithGoogle, signInWithApple, signInWithEmail, signUpWithEmail, signInAsGuest, isLoading } = useAuth();
+  const [step, setStep] = useState<"home" | "guest-setup" | "email-login" | "email-signup">("home");
   const [guestName, setGuestName] = useState(generateGuestName());
   const [selectedSport, setSelectedSport] = useState<SportType>("skiing");
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [nameInput, setNameInput] = useState("");
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -112,6 +115,22 @@ export default function LandingPage() {
                 Continua con Apple
               </motion.button>
 
+              {/* Email */}
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setStep("email-login")}
+                className="w-full flex items-center justify-center gap-3
+                           py-4 rounded-2xl font-semibold text-sm
+                           border-2 transition-all touch-target-lg"
+                style={{
+                  borderColor: "var(--border)",
+                  color: "var(--text-primary)",
+                  background: "var(--bg-secondary)",
+                }}
+              >
+                ✉️ Continua con Email
+              </motion.button>
+
               {/* Separatore */}
               <div className="divider text-xs">oppure</div>
 
@@ -123,8 +142,8 @@ export default function LandingPage() {
                            border-2 transition-all touch-target-lg"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--text-primary)",
-                  background: "var(--bg-secondary)",
+                  color: "var(--text-secondary)",
+                  background: "transparent",
                 }}
               >
                 👤 Entra come ospite
@@ -140,7 +159,73 @@ export default function LandingPage() {
           </motion.div>
         )}
 
-        {/* Step 2: configurazione ospite */}
+        {/* Step 2a: login email */}
+        {(step === "email-login" || step === "email-signup") && (
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.3 }}
+            className="w-full max-w-sm flex flex-col gap-5"
+          >
+            <div className="flex items-center gap-3">
+              <button onClick={() => setStep("home")} className="btn-ghost p-2 rounded-xl">←</button>
+              <h2 className="text-2xl font-bold">
+                {step === "email-login" ? "Accedi" : "Crea account"}
+              </h2>
+            </div>
+
+            {step === "email-signup" && (
+              <input
+                className="input"
+                placeholder="Il tuo nome"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                maxLength={40}
+              />
+            )}
+
+            <input
+              className="input"
+              type="email"
+              placeholder="Email"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+            />
+
+            <input
+              className="input"
+              type="password"
+              placeholder="Password"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+            />
+
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              disabled={isLoading || !emailInput || !passwordInput || (step === "email-signup" && !nameInput)}
+              onClick={() =>
+                step === "email-login"
+                  ? signInWithEmail(emailInput, passwordInput)
+                  : signUpWithEmail(emailInput, passwordInput, nameInput)
+              }
+              className="btn-primary w-full py-4 text-base rounded-2xl"
+            >
+              {isLoading ? "..." : step === "email-login" ? "Accedi" : "Registrati"}
+            </motion.button>
+
+            <button
+              onClick={() => setStep(step === "email-login" ? "email-signup" : "email-login")}
+              className="text-sm text-center"
+              style={{ color: "var(--primary)" }}
+            >
+              {step === "email-login" ? "Non hai un account? Registrati" : "Hai già un account? Accedi"}
+            </button>
+          </motion.div>
+        )}
+
+        {/* Step 2b: configurazione ospite */}
         {step === "guest-setup" && (
           <motion.div
             key="guest"

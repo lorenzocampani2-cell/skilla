@@ -218,6 +218,32 @@ export interface SocketEvents {
   error: { message: string; code: string };
 }
 
+// --- ROOMS (stanze voce live) ---
+export interface Room {
+  id: string;
+  name: string;
+  description?: string;
+  creatorId: string;
+  creator?: Pick<User, "id" | "displayName" | "avatar" | "sport">;
+  sport?: SportType;
+  isLive: boolean;
+  maxUsers?: number;
+  voiceRoomId: string; // LiveKit room name
+  participantCount: number;
+  participants?: RoomParticipant[];
+  createdAt: string;
+  endedAt?: string;
+}
+
+export interface RoomParticipant {
+  userId: string;
+  roomId: string;
+  user?: Pick<User, "id" | "displayName" | "avatar" | "sport">;
+  joinedAt: string;
+  isSpeaking: boolean;
+  isMuted: boolean;
+}
+
 // --- API RESPONSES ---
 export interface ApiResponse<T> {
   success: boolean;

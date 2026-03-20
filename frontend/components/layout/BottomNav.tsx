@@ -7,16 +7,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { MessageSquare, Map, User, Compass, Bell } from "lucide-react";
+import { MessageSquare, Map, User, Compass, Radio } from "lucide-react";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { href: "/app",               label: "Esplora",  icon: Compass,       emoji: "🏠" },
-  { href: "/app/chat",          label: "Chat",     icon: MessageSquare, emoji: "💬" },
-  { href: "/app/map",           label: "Mappa",    icon: Map,           emoji: "🗺️" },
-  { href: "/app/notifications", label: "Avvisi",   icon: Bell,          emoji: "🔔" },
-  { href: "/app/profile",       label: "Profilo",  icon: User,          emoji: "👤" },
+  { href: "/app",          label: "Esplora", icon: Compass,       emoji: "🏠" },
+  { href: "/app/chat",     label: "Chat",    icon: MessageSquare, emoji: "💬" },
+  { href: "/app/rooms",    label: "Voce",    icon: Radio,         emoji: "🎙️" },
+  { href: "/app/map",      label: "Mappa",   icon: Map,           emoji: "🗺️" },
+  { href: "/app/profile",  label: "Profilo", icon: User,          emoji: "👤" },
 ];
 
 export function BottomNav() {

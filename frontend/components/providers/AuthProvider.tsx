@@ -14,6 +14,8 @@ import toast from "react-hot-toast";
 interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string, displayName: string) => Promise<void>;
   signInAsGuest: (displayName?: string) => Promise<void>;
   signOut: () => Promise<void>;
   isLoading: boolean;
@@ -143,6 +145,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  // Login email + password
+  async function signInWithEmail(email: string, password: string) {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        toast.error(error.message.includes("Invalid login") ? "Email o password errati." : error.message);
+        return;
+      }
+      if (data.user) {
+        await loadOrCreateProfile(data.user.id, data.user);
+        router.push("/app");
+      }
+    } catch (err) {
+      toast.error("Errore durante il login. Riprova.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // Registrazione email + password
+  async function signUpWithEmail(email: string, password: string, displayName: string) {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: displayName } },
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      if (data.user) {
+        await loadOrCreateProfile(data.user.id, { email, user_metadata: { full_name: displayName } });
+        toast.success("Account creato! Controlla la tua email per confermare.");
+        router.push("/app");
+      }
+    } catch (err) {
+      toast.error("Errore durante la registrazione. Riprova.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   // Login Apple OAuth
   async function signInWithApple() {
     await supabase.auth.signInWithOAuth({
@@ -188,7 +235,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ signInWithGoogle, signInWithApple, signInAsGuest, signOut, isLoading }}
+      value={{ signInWithGoogle, signInWithApple, signInWithEmail, signUpWithEmail, signInAsGuest, signOut, isLoading }}
     >
       {children}
     </AuthContext.Provider>
