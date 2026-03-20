@@ -136,9 +136,21 @@ export function MessageBubble({ message, isOwn, showAvatar, chatId, isAdmin }: P
                     ↩ Risposta a...
                   </div>
                 )}
-                <p className={cn("text-sm leading-relaxed", isEmergency && "text-emergency-base")}>
-                  {message.content}
-                </p>
+                {message.type === "audio" && message.content?.startsWith("data:audio") ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🎤</span>
+                    <audio
+                      controls
+                      src={message.content}
+                      className="max-w-[200px] h-8"
+                      style={{ filter: isOwn ? "invert(1) brightness(2)" : "none" }}
+                    />
+                  </div>
+                ) : (
+                  <p className={cn("text-sm leading-relaxed", isEmergency && "text-emergency-base")}>
+                    {message.content}
+                  </p>
+                )}
               </>
             )}
 

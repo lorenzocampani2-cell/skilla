@@ -56,6 +56,25 @@ interface AppState {
   setUnreadCount: (chatId: string, count: number) => void;
   clearUnread: (chatId: string) => void;
   totalUnread: () => number;
+
+  // --- Notifiche in-app ---
+  notifications: AppNotification[];
+  addNotification: (n: Omit<AppNotification, "id" | "createdAt" | "read">) => void;
+  markNotificationRead: (id: string) => void;
+  clearNotifications: () => void;
+  unreadNotifications: () => number;
+}
+
+export interface AppNotification {
+  id: string;
+  type: "message" | "member_joined" | "mention" | "system";
+  title: string;
+  body: string;
+  chatId?: string;
+  chatName?: string;
+  senderName?: string;
+  read: boolean;
+  createdAt: number;
 }
 
 export const useAppStore = create<AppState>()(
@@ -179,6 +198,24 @@ export const useAppStore = create<AppState>()(
         })),
       totalUnread: () =>
         Object.values(get().unreadCounts).reduce((a, b) => a + b, 0),
+
+      // ── NOTIFICHE ──
+      notifications: [],
+      addNotification: (n) =>
+        set((state) => ({
+          notifications: [
+            { ...n, id: `${Date.now()}-${Math.random()}`, createdAt: Date.now(), read: false },
+            ...state.notifications.slice(0, 49), // max 50
+          ],
+        })),
+      markNotificationRead: (id) =>
+        set((state) => ({
+          notifications: state.notifications.map((n) =>
+            n.id === id ? { ...n, read: true } : n
+          ),
+        })),
+      clearNotifications: () => set({ notifications: [] }),
+      unreadNotifications: () => get().notifications.filter((n) => !n.read).length,
     }),
 
     {

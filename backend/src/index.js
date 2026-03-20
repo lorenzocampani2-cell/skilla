@@ -17,6 +17,7 @@ const { authenticateSocket } = require("./middleware/auth");
 const { registerChatHandlers } = require("./handlers/chat");
 const { registerMessageHandlers } = require("./handlers/messages");
 const { registerAdminHandlers } = require("./handlers/admin");
+const { registerLocationHandlers } = require("./handlers/location");
 
 // --- Routes REST ---
 const authRoutes = require("./routes/auth");
@@ -101,6 +102,7 @@ io.on("connection", (socket) => {
   registerChatHandlers(io, socket, userSockets);
   registerMessageHandlers(io, socket, userSockets);
   registerAdminHandlers(io, socket, userSockets);
+  registerLocationHandlers(io, socket, userSockets);
 
   // Gestione disconnessione
   socket.on("disconnect", (reason) => {

@@ -75,6 +75,32 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
         if (message.chatId !== activeChatId) {
           const current = useAppStore.getState().unreadCounts[message.chatId] || 0;
           setUnreadCount(message.chatId, current + 1);
+
+          // Solo se non è un messaggio proprio e non è audio/system
+          if (message.senderId !== currentUser.id && message.type !== "system") {
+            const chat = useAppStore.getState().chats.find((c) => c.id === message.chatId);
+            const senderName = (message as unknown as { sender?: { displayName?: string } }).sender?.displayName || "Qualcuno";
+            const body = message.type === "audio" ? "🎤 Messaggio vocale" : message.content;
+
+            // Notifica in-app
+            useAppStore.getState().addNotification({
+              type: "message",
+              title: chat?.name || "Nuova chat",
+              body: `${senderName}: ${body.slice(0, 80)}`,
+              chatId: message.chatId,
+              chatName: chat?.name,
+              senderName,
+            });
+
+            // Browser notification
+            if (typeof window !== "undefined" && Notification.permission === "granted") {
+              new Notification(chat?.name || "Skilla", {
+                body: `${senderName}: ${body.slice(0, 80)}`,
+                icon: "/icon-192.png",
+                tag: message.chatId,
+              });
+            }
+          }
         }
       });
 
