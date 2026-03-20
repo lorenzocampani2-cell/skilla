@@ -7,81 +7,98 @@
 @tailwind utilities;
 
 /* Google Fonts: Inter */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&family=JetBrains+Mono:wght@400;500&display=swap");
 
 /* ============================================================
    BASE — Reset e variabili CSS
    ============================================================ */
 @layer base {
   :root {
-    /* Tema Light (default) */
-    --bg-primary: #F8FAFC;
-    --bg-secondary: #F1F5F9;
-    --bg-card: #FFFFFF;
+    /* ── Tema Light ── */
+    --bg-primary:   #F5F7FA;
+    --bg-secondary: #ECEEF3;
+    --bg-card:      #FFFFFF;
+    --surface-2:    #E4E6EC;
     --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --text-muted: #94A3B8;
-    --border: #E2E8F0;
-    --accent: #3B82F6;
-    --accent-hover: #2563EB;
+    --text-secondary:#475569;
+    --text-muted:   #94A3B8;
+    --border:       #DDE1EA;
 
-    /* Tema comune */
-    --radius: 12px;
-    --radius-lg: 20px;
-    --sidebar-width: 280px;
-    --navbar-height: 64px;
-    --bottom-nav-height: 68px;
+    /* Accent */
+    --primary:        #5865F2;
+    --primary-hover:  #4752C4;
+    --primary-glow:   rgba(88,101,242,0.25);
+    --accent:         #5865F2;
+    --accent-hover:   #4752C4;
 
-    /* Transizioni fluide */
-    --transition: 200ms ease;
-    --transition-slow: 400ms ease;
+    /* Geometry */
+    --radius:       14px;
+    --radius-lg:    22px;
+    --sidebar-width:280px;
+    --navbar-height:64px;
+    --bottom-nav-height: 72px;
+
+    /* Transitions */
+    --transition:      180ms ease;
+    --transition-slow: 380ms ease;
   }
 
+  /* ── Tema Dark — Spotify / Discord inspired ── */
   .dark {
-    --bg-primary: #0A0F1E;
-    --bg-secondary: #111827;
-    --bg-card: #1E2537;
-    --text-primary: #F1F5F9;
-    --text-secondary: #94A3B8;
-    --text-muted: #4B5563;
-    --border: #1F2937;
-    --accent: #60A5FA;
-    --accent-hover: #3B82F6;
+    --bg-primary:    #0a0a0f;
+    --bg-secondary:  #111118;
+    --bg-card:       #18181f;
+    --surface-2:     #222230;
+    --text-primary:  #EDEEF0;
+    --text-secondary:#9A9BAA;
+    --text-muted:    #4A4A5A;
+    --border:        #252530;
+
+    --primary:       #5865F2;
+    --primary-hover: #6B78FF;
+    --primary-glow:  rgba(88,101,242,0.30);
+    --accent:        #5865F2;
+    --accent-hover:  #6B78FF;
   }
 
-  /* ── Modalità HIGH CONTRAST ── */
+  /* ── HIGH CONTRAST ── */
   .high-contrast {
-    --bg-primary: #000000;
-    --bg-secondary: #111111;
-    --bg-card: #000000;
-    --text-primary: #FFFFFF;
-    --text-secondary: #FFFFFF;
-    --text-muted: #CCCCCC;
-    --border: #FFFFFF;
-    --accent: #FFFF00;
-    --accent-hover: #FFD700;
+    --bg-primary:    #000000;
+    --bg-secondary:  #111111;
+    --bg-card:       #000000;
+    --surface-2:     #1a1a1a;
+    --text-primary:  #FFFFFF;
+    --text-secondary:#FFFFFF;
+    --text-muted:    #CCCCCC;
+    --border:        #FFFFFF;
+    --primary:       #FFFF00;
+    --primary-hover: #FFD700;
+    --accent:        #FFFF00;
+    --accent-hover:  #FFD700;
+    --primary-glow:  rgba(255,255,0,0.3);
   }
 
-  /* ── Modalità EMERGENCY ── */
+  /* ── EMERGENCY ── */
   .emergency {
-    --bg-primary: #000000;
-    --bg-secondary: #000000;
-    --bg-card: #1A0A00;
-    --text-primary: #FFFF00;
-    --text-secondary: #FF6600;
-    --text-muted: #FF6600;
-    --border: #FF6600;
-    --accent: #FF6600;
-    --accent-hover: #FF4400;
+    --bg-primary:    #000000;
+    --bg-secondary:  #000000;
+    --bg-card:       #1A0A00;
+    --surface-2:     #2a1200;
+    --text-primary:  #FFFF00;
+    --text-secondary:#FF6600;
+    --text-muted:    #FF6600;
+    --border:        #FF6600;
+    --primary:       #FF6600;
+    --primary-hover: #FF4400;
+    --accent:        #FF6600;
+    --accent-hover:  #FF4400;
+    --primary-glow:  rgba(255,102,0,0.3);
   }
 
   html {
-    /* Scrollbar sottile e discreta */
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
-    /* Previeni zoom accidentale su iOS */
     -webkit-text-size-adjust: 100%;
-    /* Smooth scroll */
     scroll-behavior: smooth;
   }
 
@@ -89,7 +106,6 @@
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: "Inter", system-ui, sans-serif;
-    /* Safe area per dispositivi con notch */
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
@@ -98,15 +114,14 @@
     transition: background-color var(--transition-slow), color var(--transition-slow);
   }
 
-  /* Scrollbar personalizzata su WebKit */
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-  /* Focus ring accessibile */
   :focus-visible {
-    @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: var(--primary);
   }
 
   .high-contrast :focus-visible,
@@ -114,19 +129,18 @@
     @apply ring-yellow-400 ring-4;
   }
 
-  /* Selezione testo */
   ::selection {
-    background: var(--accent);
+    background: var(--primary);
     color: white;
   }
 }
 
 /* ============================================================
-   COMPONENTS — Stili riutilizzabili
+   COMPONENTS
    ============================================================ */
 @layer components {
 
-  /* ── Card base ── */
+  /* ── Card ── */
   .card {
     @apply rounded-2xl border;
     background: var(--bg-card);
@@ -134,19 +148,33 @@
     transition: all var(--transition);
   }
 
-  /* ── Bottone primario ── */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2
-           px-5 py-3 rounded-xl font-semibold text-white
-           touch-target transition-all active:scale-95
-           focus-visible:ring-2 focus-visible:ring-blue-400;
-    background: var(--accent);
+  .card-hover:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary), 0 4px 24px var(--primary-glow);
+    transform: translateY(-1px);
   }
 
-  .btn-primary:hover { background: var(--accent-hover); }
+  /* ── Bottone primario — bold, Nike-like ── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 rounded-xl font-bold text-white text-sm
+           touch-target transition-all active:scale-95;
+    background: var(--primary);
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 20px var(--primary-glow);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active { transform: translateY(0) scale(0.96); }
 
   .btn-primary:disabled {
-    @apply opacity-40 cursor-not-allowed active:scale-100;
+    @apply opacity-40 cursor-not-allowed;
+    transform: none;
+    box-shadow: none;
   }
 
   /* ── Bottone ghost ── */
@@ -158,8 +186,21 @@
   }
 
   .btn-ghost:hover {
-    background: var(--bg-secondary);
+    background: var(--surface-2);
     color: var(--text-primary);
+  }
+
+  /* ── Bottone outline ── */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-2.5 rounded-xl font-semibold text-sm
+           touch-target transition-all active:scale-95 border;
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .btn-outline:hover {
+    background: var(--primary-glow);
   }
 
   /* ── Input ── */
@@ -172,13 +213,13 @@
   }
 
   .input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
   }
 
   .input::placeholder { color: var(--text-muted); }
 
-  /* ── Badge sport ── */
+  /* ── Sport badge ── */
   .sport-badge {
     @apply inline-flex items-center gap-1.5 px-3 py-1
            rounded-full text-xs font-bold;
@@ -195,38 +236,44 @@
   .avatar-lg  { @apply w-14 h-14 text-xl; }
   .avatar-xl  { @apply w-20 h-20 text-3xl; }
 
-  /* Online indicator */
   .online-dot {
     @apply absolute bottom-0 right-0 w-3 h-3 rounded-full
            bg-green-400 border-2;
     border-color: var(--bg-card);
   }
 
-  /* ── Glassmorphism pannello ── */
+  /* ── Glass panel ── */
   .glass-panel {
-    @apply glass rounded-2xl;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(24, 24, 31, 0.75);
+    border: 1px solid rgba(255,255,255,0.07);
+    @apply rounded-2xl;
   }
 
-  .dark .glass-panel {
-    @apply shadow-glass-dark;
-  }
-
-  /* ── Navbar fissa ── */
+  /* ── Bottom Nav — frosted glass ── */
   .bottom-nav {
     @apply fixed bottom-0 left-0 right-0 z-50
-           flex items-center justify-around
-           border-t;
-    background: var(--bg-card);
-    border-color: var(--border);
+           flex items-center justify-around;
     height: var(--bottom-nav-height);
     padding-bottom: env(safe-area-inset-bottom);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: rgba(10, 10, 15, 0.88);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Light mode bottom nav */
+  :root:not(.dark) .bottom-nav {
+    background: rgba(255, 255, 255, 0.88);
+    border-top: 1px solid rgba(0,0,0,0.08);
   }
 
   /* ── Chip / Tag ── */
   .chip {
     @apply inline-flex items-center gap-1 px-2.5 py-1
            rounded-full text-xs font-medium;
-    background: var(--bg-secondary);
+    background: var(--surface-2);
     color: var(--text-secondary);
     border: 1px solid var(--border);
   }
@@ -246,11 +293,11 @@
 
   /* ── Loading skeleton ── */
   .skeleton {
-    @apply rounded-lg animate-pulse;
-    background: var(--bg-secondary);
+    @apply rounded-xl animate-pulse;
+    background: var(--surface-2);
   }
 
-  /* ── Modalità EMERGENCY — override globale ── */
+  /* ── EMERGENCY overrides ── */
   .emergency .card,
   .emergency .glass-panel {
     @apply border-2;
@@ -272,33 +319,43 @@
     font-weight: 600;
   }
 
-  /* ── Modalità ESSENTIAL ── */
+  /* ── ESSENTIAL ── */
   .essential .card-label { @apply hidden; }
   .essential .secondary-content { @apply hidden; }
 
-  /* ── Gradient background animato per la homepage ── */
+  /* ── Hero gradient — homepage ── */
   .hero-gradient {
-    background: radial-gradient(
-      ellipse at top left,
-      rgba(59, 130, 246, 0.15) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at bottom right,
-      rgba(139, 92, 246, 0.1) 0%,
-      transparent 50%
-    );
+    background:
+      radial-gradient(ellipse at 20% 0%,  rgba(88,101,242,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 10%, rgba(139,92,246,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(99,102,241,0.06) 0%, transparent 60%);
+  }
+
+  /* ── Glow effetto ── */
+  .glow-primary {
+    box-shadow: 0 0 24px var(--primary-glow), 0 0 60px var(--primary-glow);
   }
 }
 
 /* ============================================================
-   UTILITIES — Classi di supporto
+   UTILITIES
    ============================================================ */
 @layer utilities {
-  /* Testo gradiente */
+  /* Testo gradiente — brand */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r
-           from-blue-400 to-violet-500;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #818CF8 0%, #C084FC 50%, #F472B6 100%);
+  }
+
+  /* Testo gradiente — energy */
+  .text-gradient-energy {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #5865F2 0%, #8B5CF6 100%);
+  }
+
+  /* Sfondo gradiente pulsante */
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, #5865F2 0%, #8B5CF6 100%);
   }
 
   /* Bordo gradiente */
@@ -312,14 +369,14 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    background: linear-gradient(135deg, #5865F2, #8B5CF6);
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
                   linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
 
-  /* Testo sport */
+  /* Colori sport */
   .text-sport-skiing    { color: #3B82F6; }
   .text-sport-snowboard { color: #8B5CF6; }
   .text-sport-football  { color: #10B981; }
@@ -329,11 +386,11 @@
   .text-sport-running   { color: #F97316; }
   .text-sport-tennis    { color: #84CC16; }
 
-  /* Nascondi scrollbar ma mantieni funzionalità */
+  /* Nascondi scrollbar */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* Testo troncato multilinea */
+  /* Clamp 2 righe */
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -341,45 +398,55 @@
     overflow: hidden;
   }
 
-  /* Sicurezza touch su mobile: previeni selezione accidentale */
   .no-select { user-select: none; -webkit-user-select: none; }
-
-  /* Overflow touch scroll fluido */
   .touch-scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; }
 }
 
 /* ============================================================
-   ANIMAZIONI PWA — Transizioni pagina
+   ANIMAZIONI — Transizioni pagina
    ============================================================ */
-.page-enter { opacity: 0; transform: translateX(16px); }
+.page-enter { opacity: 0; transform: translateY(8px); }
 .page-enter-active {
   opacity: 1;
-  transform: translateX(0);
-  transition: all 250ms ease;
+  transform: translateY(0);
+  transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .page-exit { opacity: 1; }
 .page-exit-active {
   opacity: 0;
-  transform: translateX(-16px);
-  transition: all 200ms ease;
+  transform: translateY(-4px);
+  transition: all 180ms ease;
 }
 
 /* ============================================================
-   REACT GRID LAYOUT — Drag & drop pannelli
+   KEYFRAMES
+   ============================================================ */
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0   rgba(239, 68, 68, 0.5); }
+  70%  { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0   rgba(239, 68, 68, 0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+/* ============================================================
+   REACT GRID LAYOUT
    ============================================================ */
 .react-grid-item {
   transition: all 200ms ease;
   transition-property: left, top;
 }
 
-.react-grid-item.cssTransforms {
-  transition-property: transform;
-}
-
-.react-grid-item.resizing {
-  z-index: 100;
-  will-change: width, height;
-}
+.react-grid-item.cssTransforms { transition-property: transform; }
+.react-grid-item.resizing { z-index: 100; will-change: width, height; }
 
 .react-grid-item.react-draggable-dragging {
   transition: none;
@@ -390,19 +457,14 @@
 
 .react-grid-item.react-grid-placeholder {
   @apply rounded-2xl opacity-30;
-  background: var(--accent) !important;
+  background: var(--primary) !important;
 }
 
-.react-resizable-handle {
-  @apply opacity-0 transition-opacity;
-}
-
-.react-grid-item:hover .react-resizable-handle {
-  @apply opacity-100;
-}
+.react-resizable-handle { @apply opacity-0 transition-opacity; }
+.react-grid-item:hover .react-resizable-handle { @apply opacity-100; }
 
 /* ============================================================
-   CHAT — Stili specifici messaggi
+   CHAT — Messaggi
    ============================================================ */
 .message-bubble {
   @apply rounded-2xl px-4 py-2.5 max-w-[80%] break-words text-sm;
@@ -410,27 +472,27 @@
 
 .message-bubble.own {
   @apply rounded-br-sm ml-auto;
-  background: var(--accent);
+  background: var(--primary);
   color: white;
 }
 
 .message-bubble.other {
   @apply rounded-bl-sm;
-  background: var(--bg-secondary);
+  background: var(--surface-2);
   color: var(--text-primary);
 }
 
 /* ============================================================
-   PUSH-TO-TALK — Bottone microfono
+   PUSH-TO-TALK
    ============================================================ */
 .ptt-button {
   @apply relative flex items-center justify-center
          rounded-full cursor-pointer select-none
          active:scale-95 transition-all;
-  background: var(--accent);
+  background: var(--primary);
   width: 80px;
   height: 80px;
-  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: 0 0 0 0 var(--primary-glow);
 }
 
 .ptt-button.recording {

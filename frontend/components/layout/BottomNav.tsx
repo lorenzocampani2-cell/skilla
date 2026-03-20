@@ -1,7 +1,7 @@
 "use client";
 // ============================================================
 // SKILLA — Bottom Navigation (mobile)
-// Navigazione principale con icone grandi e badge unread.
+// Frosted glass, pill indicator, design Spotify/Discord.
 // ============================================================
 
 import Link from "next/link";
@@ -12,11 +12,11 @@ import { useAppStore } from "@/lib/store/useAppStore";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { href: "/app", label: "Home", icon: Compass, emoji: "🏠" },
-  { href: "/app/chat", label: "Chat", icon: MessageSquare, emoji: "💬" },
-  { href: "/app/map", label: "Mappa", icon: Map, emoji: "🗺️" },
-  { href: "/app/notifications", label: "Avvisi", icon: Bell, emoji: "🔔" },
-  { href: "/app/profile", label: "Profilo", icon: User, emoji: "👤" },
+  { href: "/app",               label: "Esplora",  icon: Compass,       emoji: "🏠" },
+  { href: "/app/chat",          label: "Chat",     icon: MessageSquare, emoji: "💬" },
+  { href: "/app/map",           label: "Mappa",    icon: Map,           emoji: "🗺️" },
+  { href: "/app/notifications", label: "Avvisi",   icon: Bell,          emoji: "🔔" },
+  { href: "/app/profile",       label: "Profilo",  icon: User,          emoji: "👤" },
 ];
 
 export function BottomNav() {
@@ -32,7 +32,8 @@ export function BottomNav() {
       aria-label="Navigazione principale"
     >
       {NAV_ITEMS.map((item) => {
-        const isActive = pathname === item.href ||
+        const isActive =
+          pathname === item.href ||
           (item.href !== "/app" && pathname.startsWith(item.href));
 
         return (
@@ -40,55 +41,65 @@ export function BottomNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex flex-col items-center justify-center gap-1 relative",
-              "transition-all duration-200 rounded-xl",
-              isEmergency
-                ? "touch-target-emergency px-4 py-3"
-                : "touch-target px-3 py-2"
+              "relative flex flex-col items-center justify-center gap-1",
+              "transition-all duration-200 select-none",
+              isEmergency ? "px-5 py-3 min-w-[56px]" : "px-3 py-2 min-w-[48px]"
             )}
             aria-label={item.label}
             aria-current={isActive ? "page" : undefined}
           >
-            {/* Indicatore attivo */}
-            {isActive && (
+            {/* Pill indicator quando attivo */}
+            {isActive && !isEmergency && (
               <motion.div
-                layoutId="nav-indicator"
-                className="absolute inset-0 rounded-xl"
-                style={{ background: `${getComputedStyle(document.documentElement).getPropertyValue("--accent")}20` }}
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                layoutId="nav-pill"
+                className="absolute inset-0 rounded-2xl"
+                style={{ background: "var(--primary-glow)" }}
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}
 
-            {/* Badge unread (solo su Chat) */}
+            {/* Badge unread — solo su Chat */}
             {item.href === "/app/chat" && unread > 0 && (
-              <span className="absolute -top-1 -right-1 z-10
-                               min-w-5 h-5 px-1 rounded-full
-                               bg-red-500 text-white text-[10px] font-bold
-                               flex items-center justify-center">
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute top-0.5 right-0.5 z-10
+                           min-w-[18px] h-[18px] px-1 rounded-full
+                           bg-red-500 text-white text-[9px] font-black
+                           flex items-center justify-center leading-none"
+              >
                 {unread > 99 ? "99+" : unread}
-              </span>
+              </motion.span>
             )}
 
             {/* Icona */}
-            {isEmergency ? (
-              <span className="text-3xl">{item.emoji}</span>
-            ) : (
-              <item.icon
-                size={22}
-                strokeWidth={isActive ? 2.5 : 1.8}
-                style={{ color: isActive ? "var(--accent)" : "var(--text-muted)" }}
-              />
-            )}
+            <div className="relative z-10">
+              {isEmergency ? (
+                <span className="text-3xl">{item.emoji}</span>
+              ) : (
+                <item.icon
+                  size={22}
+                  strokeWidth={isActive ? 2.5 : 1.8}
+                  style={{
+                    color: isActive ? "var(--primary)" : "var(--text-muted)",
+                    filter: isActive
+                      ? "drop-shadow(0 0 5px var(--primary))"
+                      : "none",
+                    transition: "all 180ms ease",
+                  }}
+                />
+              )}
+            </div>
 
             {/* Label */}
             <span
               className={cn(
-                "font-medium leading-none",
-                isEmergency ? "text-emergency-sm" : "text-[10px]"
+                "relative z-10 leading-none",
+                isEmergency ? "text-base font-bold" : "text-[10px] font-semibold"
               )}
               style={{
-                color: isActive ? "var(--accent)" : "var(--text-muted)",
-                fontWeight: isActive ? 700 : 500,
+                color: isActive ? "var(--primary)" : "var(--text-muted)",
+                transition: "color 180ms ease",
               }}
             >
               {item.label}

@@ -75,10 +75,10 @@ export function Sidebar() {
               "flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1",
               "text-sm font-medium transition-all",
               pathname === item.href
-                ? "bg-blue-500/10 text-blue-400"
+                ? "hover:opacity-90"
                 : "hover:bg-white/5"
             )}
-            style={{ color: pathname === item.href ? undefined : "var(--text-secondary)" }}
+            style={{ background: pathname === item.href ? "var(--primary-glow)" : undefined, color: pathname === item.href ? "var(--primary)" : "var(--text-secondary)" }}
           >
             <item.icon size={16} strokeWidth={2} />
             {item.label}
@@ -117,7 +117,7 @@ export function Sidebar() {
                   "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1",
                   "text-left transition-all",
                   isActive
-                    ? "bg-blue-500/15"
+                    ? ""
                     : "hover:bg-white/5"
                 )}
               >
@@ -161,7 +161,7 @@ export function Sidebar() {
                 {/* Badge unread */}
                 {unread > 0 && (
                   <span className="min-w-5 h-5 px-1 rounded-full
-                                   bg-blue-500 text-white text-[10px] font-bold
+                                   bg-primary text-white text-[10px] font-bold
                                    flex items-center justify-center flex-shrink-0">
                     {unread > 99 ? "99+" : unread}
                   </span>

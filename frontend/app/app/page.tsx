@@ -55,35 +55,60 @@ export default function AppHomePage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-4 pb-24 md:pb-6 max-w-2xl mx-auto">
+    <div className="flex flex-col gap-6 pb-24 md:pb-6 max-w-2xl mx-auto">
 
-      {/* ── Saluto ── */}
+      {/* ── Hero Header ── */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="relative overflow-hidden rounded-b-3xl px-5 pt-5 pb-7"
+        style={{
+          background: "linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%)",
+          borderBottom: "1px solid var(--border)",
+        }}
       >
-        <div>
-          <p className="text-sm font-medium" style={{ color: "var(--text-muted)" }}>
-            Bentornato 👋
-          </p>
-          <h1 className="text-2xl font-black" style={{ color: "var(--text-primary)" }}>
-            {currentUser?.displayName}
-            <span className="ml-2">{sportConfig.emoji}</span>
-          </h1>
-        </div>
-
-        {/* Avatar */}
-        <Link href="/app/profile">
-          <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center
-                       font-bold text-white text-lg shadow-sport"
-            style={{ background: sportConfig.color }}
-          >
-            {currentUser?.displayName?.[0]?.toUpperCase()}
+        {/* Glow decorativo */}
+        <div
+          className="absolute -top-8 -right-8 w-48 h-48 rounded-full pointer-events-none"
+          style={{
+            background: `radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)`,
+          }}
+        />
+        <div className="flex items-center justify-between relative">
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase mb-1"
+               style={{ color: "var(--text-muted)" }}>
+              Bentornato
+            </p>
+            <h1 className="text-3xl font-black tracking-tight" style={{ color: "var(--text-primary)" }}>
+              {currentUser?.displayName}
+            </h1>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-lg">{sportConfig.emoji}</span>
+              <span className="text-sm font-semibold" style={{ color: "var(--text-secondary)" }}>
+                {sportConfig.name}
+              </span>
+            </div>
           </div>
-        </Link>
+
+          {/* Avatar */}
+          <Link href="/app/profile">
+            <motion.div
+              whileTap={{ scale: 0.92 }}
+              className="w-14 h-14 rounded-2xl flex items-center justify-center
+                         font-black text-white text-xl relative"
+              style={{
+                background: `linear-gradient(135deg, ${sportConfig.color}, var(--primary))`,
+                boxShadow: `0 4px 20px ${sportConfig.color}50`,
+              }}
+            >
+              {currentUser?.displayName?.[0]?.toUpperCase()}
+            </motion.div>
+          </Link>
+        </div>
       </motion.div>
+
+      <div className="px-4 flex flex-col gap-6">
 
       {/* ── Azioni rapide ── */}
       <motion.div
@@ -93,25 +118,26 @@ export default function AppHomePage() {
         className="grid grid-cols-4 gap-3"
       >
         {[
-          { href: "/app/chat/new", icon: Plus, label: "Nuova chat", color: "#3B82F6" },
-          { href: "/app/chat", icon: MessageSquare, label: "Messaggi", color: "#8B5CF6" },
-          { href: "/app/map", icon: Map, label: "Mappa", color: "#10B981" },
-          { href: "/app/join", icon: QrCode, label: "Scansiona", color: "#F59E0B" },
+          { href: "/app/chat/new", icon: Plus,         label: "Nuova",    color: "#5865F2", bg: "rgba(88,101,242,0.15)" },
+          { href: "/app/chat",     icon: MessageSquare, label: "Chat",     color: "#8B5CF6", bg: "rgba(139,92,246,0.15)" },
+          { href: "/app/map",      icon: Map,           label: "Mappa",    color: "#10B981", bg: "rgba(16,185,129,0.15)" },
+          { href: "/app/join",     icon: QrCode,        label: "QR Code",  color: "#F59E0B", bg: "rgba(245,158,11,0.15)" },
         ].map((action) => (
           <Link key={action.href} href={action.href}>
             <motion.div
-              whileTap={{ scale: 0.93 }}
-              className="flex flex-col items-center gap-2 p-3 rounded-2xl
-                         touch-target card"
+              whileTap={{ scale: 0.90 }}
+              whileHover={{ scale: 1.04 }}
+              className="flex flex-col items-center gap-2.5 p-3 rounded-2xl"
+              style={{ background: action.bg }}
             >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: `${action.color}20` }}
+                className="w-11 h-11 rounded-xl flex items-center justify-center"
+                style={{ background: action.color + "22" }}
               >
                 <action.icon size={20} style={{ color: action.color }} />
               </div>
-              <span className="text-[10px] font-semibold text-center leading-tight"
-                    style={{ color: "var(--text-secondary)" }}>
+              <span className="text-[10px] font-bold text-center leading-tight"
+                    style={{ color: action.color }}>
                 {action.label}
               </span>
             </motion.div>
@@ -225,6 +251,8 @@ export default function AppHomePage() {
           </div>
         </motion.div>
       )}
+
+      </div>{/* /px-4 */}
     </div>
   );
 }
