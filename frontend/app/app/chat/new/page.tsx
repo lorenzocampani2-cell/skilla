@@ -13,7 +13,7 @@ export default function NewChatPage() {
   const { currentUser, addChat } = useAppStore();
   const [name, setName] = useState("");
   const [isPublic, setIsPublic] = useState(true);
-  const [sport, setSport] = useState(currentUser?.sport || "other");
+  const [sport, setSport] = useState<string>(currentUser?.sport || "other");
   const [loading, setLoading] = useState(false);
 
   async function handleCreate() {
@@ -69,8 +69,7 @@ export default function NewChatPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setIsPublic(true)}
-              className={`flex-1 card p-3 flex items-center gap-2 justify-center transition-all ${isPublic ? "ring-2" : ""}`}
-              style={{ ringColor: "var(--primary)" }}
+              className={`flex-1 card p-3 flex items-center gap-2 justify-center transition-all ${isPublic ? "ring-2 ring-indigo-500" : ""}`}
             >
               <Globe className="w-4 h-4" style={{ color: isPublic ? "var(--primary)" : "var(--text-secondary)" }} />
               <span className="text-sm font-medium" style={{ color: isPublic ? "var(--primary)" : "var(--text-secondary)" }}>
@@ -79,7 +78,7 @@ export default function NewChatPage() {
             </button>
             <button
               onClick={() => setIsPublic(false)}
-              className={`flex-1 card p-3 flex items-center gap-2 justify-center transition-all ${!isPublic ? "ring-2" : ""}`}
+              className={`flex-1 card p-3 flex items-center gap-2 justify-center transition-all ${!isPublic ? "ring-2 ring-indigo-500" : ""}`}
             >
               <Lock className="w-4 h-4" style={{ color: !isPublic ? "var(--primary)" : "var(--text-secondary)" }} />
               <span className="text-sm font-medium" style={{ color: !isPublic ? "var(--primary)" : "var(--text-secondary)" }}>
@@ -97,13 +96,12 @@ export default function NewChatPage() {
             {Object.entries(SPORT_CONFIG).map(([key, cfg]) => (
               <button
                 key={key}
-                onClick={() => setSport(key as typeof sport)}
-                className={`card p-2 text-center text-sm transition-all ${sport === key ? "ring-2" : ""}`}
-                style={{ ringColor: "var(--primary)" }}
+                onClick={() => setSport(key)}
+                className={`card p-2 text-center text-sm transition-all ${sport === key ? "ring-2 ring-indigo-500" : ""}`}
               >
                 <div className="text-xl">{cfg.emoji}</div>
                 <div className="text-xs mt-1" style={{ color: sport === key ? "var(--primary)" : "var(--text-secondary)" }}>
-                  {cfg.name}
+                  {cfg.label}
                 </div>
               </button>
             ))}

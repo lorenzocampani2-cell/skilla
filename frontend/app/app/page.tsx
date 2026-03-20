@@ -86,7 +86,7 @@ export default function AppHomePage() {
             <div className="flex items-center gap-2 mt-1">
               <span className="text-lg">{sportConfig.emoji}</span>
               <span className="text-sm font-semibold" style={{ color: "var(--text-secondary)" }}>
-                {sportConfig.name}
+                {sportConfig.label}
               </span>
             </div>
           </div>

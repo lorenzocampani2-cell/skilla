@@ -47,7 +47,7 @@ export default function ProfilePage() {
           className="px-3 py-1 rounded-full text-sm font-medium"
           style={{ background: "var(--surface-2)", color: "var(--text-secondary)" }}
         >
-          {sport.emoji} {sport.name}
+          {sport.emoji} {sport.label}
         </div>
       </motion.div>
 
