@@ -39,6 +39,11 @@ export function ChatAdminPanel({ chat, isOpen, onClose, isAdmin }: Props) {
     toast.success(`Utente silenziato${duration ? ` per ${duration} min` : ""}`);
   }
 
+  function unmuteUser(userId: string) {
+    socket?.emit("member:unmute", { userId, chatId: chat.id });
+    toast.success("Utente riattivato");
+  }
+
   function expelUser(userId: string) {
     if (confirm("Vuoi rimuovere questo utente dalla chat?")) {
       socket?.emit("member:expel", { userId, chatId: chat.id });
@@ -134,6 +139,7 @@ export function ChatAdminPanel({ chat, isOpen, onClose, isAdmin }: Props) {
                   currentUserId={currentUser?.id || ""}
                   isAdmin={isAdmin}
                   onMute={muteUser}
+                  onUnmute={unmuteUser}
                   onExpel={expelUser}
                   onPromote={promoteUser}
                   onDemote={demoteUser}
@@ -192,9 +198,24 @@ export function ChatAdminPanel({ chat, isOpen, onClose, isAdmin }: Props) {
                   className="flex items-center gap-3 w-full px-4 py-3 rounded-xl
                              text-sm font-semibold text-red-400 transition-all"
                   style={{ background: "rgba(239,68,68,0.1)" }}
-                  onClick={() => {
-                    if (confirm("Eliminare la chat? L'azione è irreversibile.")) {
-                      toast.error("Funzione non ancora disponibile");
+                  onClick={async () => {
+                    if (!confirm("Eliminare la chat? L'azione è irreversibile.")) return;
+                    try {
+                      const { getToken } = await import("@/lib/utils");
+                      const token = await getToken();
+                      const res = await fetch(
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/${chat.id}`,
+                        { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
+                      );
+                      if (res.ok) {
+                        toast.success("Chat eliminata");
+                        onClose();
+                        window.location.href = "/app/chat";
+                      } else {
+                        toast.error("Errore nell'eliminazione");
+                      }
+                    } catch {
+                      toast.error("Errore di rete");
                     }
                   }}
                 >
@@ -217,6 +238,7 @@ function MemberRow({
   currentUserId,
   isAdmin,
   onMute,
+  onUnmute,
   onExpel,
   onPromote,
   onDemote,
@@ -226,6 +248,7 @@ function MemberRow({
   currentUserId: string;
   isAdmin: boolean;
   onMute: (id: string, duration?: number) => void;
+  onUnmute: (id: string) => void;
   onExpel: (id: string) => void;
   onPromote: (id: string) => void;
   onDemote: (id: string) => void;
@@ -289,19 +312,30 @@ function MemberRow({
             className="ml-14 overflow-hidden"
           >
             <div className="flex flex-wrap gap-2 py-2 px-2">
-              {/* Muto */}
-              <button
-                onClick={() => { onMute(member.userId, 60); setShowActions(false); }}
-                className="chip hover:bg-yellow-500/20 hover:text-yellow-400 cursor-pointer"
-              >
-                <VolumeX size={11} /> Muta 1h
-              </button>
-              <button
-                onClick={() => { onMute(member.userId); setShowActions(false); }}
-                className="chip hover:bg-yellow-500/20 hover:text-yellow-400 cursor-pointer"
-              >
-                <VolumeX size={11} /> Muta ∞
-              </button>
+              {/* Muto / Smuta */}
+              {member.isMuted ? (
+                <button
+                  onClick={() => { onUnmute(member.userId); setShowActions(false); }}
+                  className="chip hover:bg-green-500/20 hover:text-green-400 cursor-pointer"
+                >
+                  <VolumeX size={11} /> Smuta
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => { onMute(member.userId, 60); setShowActions(false); }}
+                    className="chip hover:bg-yellow-500/20 hover:text-yellow-400 cursor-pointer"
+                  >
+                    <VolumeX size={11} /> Muta 1h
+                  </button>
+                  <button
+                    onClick={() => { onMute(member.userId); setShowActions(false); }}
+                    className="chip hover:bg-yellow-500/20 hover:text-yellow-400 cursor-pointer"
+                  >
+                    <VolumeX size={11} /> Muta ∞
+                  </button>
+                </>
+              )}
 
               {/* Promuovi/Demote */}
               {isMemberAdmin ? (
